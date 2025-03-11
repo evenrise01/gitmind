@@ -11,9 +11,17 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { Bot, CreditCard, LayoutDashboard, Plus, Presentation } from "lucide-react";
+import {
+  Bot,
+  CreditCard,
+  LayoutDashboard,
+  Plus,
+  Presentation,
+} from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -57,10 +65,18 @@ const projects = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { open } = useSidebar();
 
   return (
     <Sidebar collapsible="icon" variant="floating">
-      <SidebarHeader>Logo</SidebarHeader>
+      <SidebarHeader>
+        <div className="flex items-center gap-2">
+          <Image src="/logo.svg" alt="Logo image" height={40} width={40} />
+          {open && (
+            <h1 className="text-xl font-bold text-primary/80">GitMind</h1>
+          )}
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -81,6 +97,7 @@ export function AppSidebar() {
                             : "text-foreground/80 hover:text-foreground",
                         )}
                       >
+                        <item.icon />
                         {item.title}
                       </Link>
                     </SidebarMenuButton>
@@ -118,14 +135,17 @@ export function AppSidebar() {
                 );
               })}
               <div className="h-4"></div>
-              <SidebarMenuItem>
-                <Link href={'/create'}>
-                <Button size = 'sm' variant={"outline"} className="w-fit">
-                  <Plus/>
-                  Create project
-                </Button>
-                </Link>
-              </SidebarMenuItem>
+
+              {open && (
+                <SidebarMenuItem>
+                  <Link href={"/create"}>
+                    <Button size="sm" variant={"outline"} className="w-fit">
+                      <Plus />
+                      Create project
+                    </Button>
+                  </Link>
+                </SidebarMenuItem>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

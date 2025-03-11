@@ -1,0 +1,20 @@
+<svg 
+    width="100" 
+    height="100" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+>
+    <!-- Git Branching Nodes -->
+    <circle cx="6" cy="12" r="2" fill="#00A8E8"/>  <!-- Vibrant Blue -->
+    <circle cx="12" cy="6" r="2" fill="#00A8E8"/>  <!-- Vibrant Blue -->
+    <circle cx="18" cy="12" r="2" fill="#00A8E8"/>  <!-- Vibrant Blue -->
+    <circle cx="12" cy="18" r="2" fill="#00A8E8"/>  <!-- Vibrant Blue -->
+
+    <!-- Connecting Paths -->
+    <path d="M6 12C8 8 16 8 18 12" stroke="#8A2BE2"/>  <!-- Purple/Violet -->
+    <path d="M12 6L12 18" stroke="#8A2BE2"/>  <!-- Purple/Violet -->
+</svg>
