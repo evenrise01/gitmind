@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import { TRPCReactProvider } from "@/trpc/react";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "GitMind",
@@ -31,6 +32,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <TRPCReactProvider>{children}</TRPCReactProvider>
+            <Toaster richColors/>
           </ThemeProvider>
         </body>
       </html>
