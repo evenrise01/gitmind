@@ -1,14 +1,23 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { Document } from "@langchain/core/documents";
 
+// Initialize the Google Generative AI client with the API key from environment variables
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
+// Configure the generative model to use Gemini 1.5 Flash
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
 });
 
+/**
+ * Summarizes a git commit diff using Gemini AI
+ * @param diff - The git diff content to summarize
+ * @returns A summary of the changes in the commit
+ */
 export const aiSummarizeCommit = async (diff: string) => {
   //https://github.com/docker/genai-stack/commit/<commithash>.diff
   const response = await model.generateContent([
+    // System prompt that explains git diff format and provides examples of good summaries
     `You are an expert programmer, and you are trying to summarize a git.
         Reminders about the git diff format:
         For every file, there are a few metadata lines, like (for example):
@@ -38,8 +47,55 @@ export const aiSummarizeCommit = async (diff: string) => {
         because there were more than two relevant files in the hypothetical commit.
         Do not include parts of the example in your summary.
         It is given only as an example of appropriate comments.`,
+    // User prompt that includes the diff to be summarized
     `Please summarize the following diff file: \n\n${diff}`,
   ]);
 
   return response.response.text();
 };
+
+/**
+ * Generates a concise summary of a code file for onboarding junior engineers
+ * @param doc - Document object containing the code and metadata
+ * @returns A summary of the code's purpose, limited to 100 words
+ */
+export async function summarizeCode(doc: Document) {
+  console.log("Getting summary for", doc.metadata.source);
+
+  try {
+    // Limit code to 10,000 characters to avoid token limitations
+    const code = doc.pageContent.slice(0, 10000);
+    const response = await model.generateContent([
+      // System prompt that establishes the role and context
+      `You are an intelligent senior software engineer who specializes in onboarding junior software engineersonto projects`,
+      // User prompt that includes the file path and code to summarize
+      `You are onboarding a junior software engineer and explaining to them the purpose of the ${doc.metadata.source} file
+          Here is the code: 
+          ---
+          ${code}
+          ---
+          Give a summary no more than 100 words of the above code`,
+    ]);
+
+    return response.response.text();
+  } catch (error) {
+    // Return empty string if summarization fails
+    return "";
+  }
+}
+
+/**
+ * Generates vector embeddings for a text summary using Google's text embedding model
+ * @param summary - The text to convert into embeddings
+ * @returns An array of numerical values representing the embedding vector
+ */
+export async function generateEmbedding(summary: string) {
+  // Create a separate model instance for text embeddings
+  const model = genAI.getGenerativeModel({
+    model: "text-embedding-004",
+  });
+  // Generate embeddings from the summary text
+  const result = await model.embedContent(summary);
+  const embedding = result.embedding;
+  return embedding.values;
+}
