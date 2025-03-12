@@ -14,6 +14,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import useProject from "@/hooks/use-project";
+import useRefetch from "@/hooks/use-refetch";
 import { cn } from "@/lib/utils";
 import {
   Bot,
