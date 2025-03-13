@@ -12,12 +12,15 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import useProject from "@/hooks/use-project";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { askQuestion } from "./actions";
 import { readStreamableValue } from "ai/rsc";
 import CodeReferences from "./code-references";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
+import MagicButton from "@/components/ui/magic-button";
+import { Brain } from "lucide-react";
+import useRefetch from "@/hooks/use-refetch";
 
 const AskQuestionCard = () => {
   const { project } = useProject();
@@ -28,7 +31,25 @@ const AskQuestionCard = () => {
     { fileName: string; sourceCode: string; summary: string }[]
   >([]);
   const [answer, setAnswer] = React.useState("");
-  const saveAnswer = api.project.saveAnswer.useMutation()
+  const [theme, setTheme] = React.useState<"light" | "dark">("light");
+  const saveAnswer = api.project.saveAnswer.useMutation();
+
+  // Detect theme changes
+  useEffect(() => {
+    const updateTheme = () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      setTheme(isDark ? "dark" : "light");
+    };
+
+    updateTheme(); // Initial check
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setAnswer("");
@@ -41,56 +62,83 @@ const AskQuestionCard = () => {
     setOpen(true);
     setFilesReferences(filesReferences);
 
-    for await (const delta of readStreamableValue(output))
+    for await (const delta of readStreamableValue(output)) {
       if (delta) {
         setAnswer((ans) => ans + delta);
       }
+    }
     setLoading(false);
   };
+
+  const refetch = useRefetch();
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[80vw]">
+        <DialogContent className="flex max-h-[80vh] flex-col sm:max-w-[80vw]">
           <DialogHeader>
             <div className="flex items-center gap-2">
-            <DialogTitle>
-              <Image
-                src="/logo.svg"
-                alt="GitMind Logo"
-                width={40}
-                height={40}
-              />
-            </DialogTitle>
-            <Button disabled={saveAnswer.isPending} variant={'outline'} onClick={() => {
-                saveAnswer.mutate({
-                    projectId: project!.id,
-                    question,
-                    answer, 
-                    filesReferences
-                }, {
-                    onSuccess: () => {
-                        toast.success('Your answer has been saved!')
+              <DialogTitle className="flex items-center gap-2">
+                <Image
+                  src="/logo.svg"
+                  alt="GitMind Logo"
+                  width={40}
+                  height={40}
+                />
+                Answer
+              </DialogTitle>
+              <Button
+                disabled={saveAnswer.isPending}
+                variant="outline"
+                onClick={() => {
+                  saveAnswer.mutate(
+                    {
+                      projectId: project!.id,
+                      question,
+                      answer,
+                      filesReferences,
                     },
-                    onError: () => {
-                        toast.error('Failed to save your answer!')
-                    }
-                })
-            }}>
+                    {
+                      onSuccess: () => {
+                        toast.success("Your answer has been saved!");
+                        refetch();
+                      },
+                      onError: () => {
+                        toast.error("Failed to save your answer!");
+                      },
+                    },
+                  );
+                }}
+              >
                 Save Answer
-            </Button>
+              </Button>
             </div>
           </DialogHeader>
-          
 
-          <MDEditor.Markdown
-            source={answer}
-            className="!h-full max-h-[40vh] max-w-[70vw] overflow-scroll"
-          />
-          <div className="h-4"></div>
-          <CodeReferences fileReferences={filesReferences}/>
-          <Button type="button" onClick={() => setOpen(false)}>
-            Close
-          </Button>
+          <div className="flex-1 overflow-y-auto p-4">
+            {loading ? (
+              <div className="flex h-full items-center justify-center">
+                <p className="text-foreground">Loading...</p>
+              </div>
+            ) : (
+              <>
+                <div data-color-mode={theme}>
+                  <MDEditor.Markdown
+                    source={answer}
+                    className="prose dark:prose-invert max-w-none rounded-md bg-background p-4 text-foreground"
+                    style={{ minHeight: "200px" }}
+                  />
+                </div>
+                <div className="h-4" />
+                <CodeReferences fileReferences={filesReferences} />
+              </>
+            )}
+          </div>
+
+          <div className="flex justify-end border-t p-4">
+            <Button type="button" onClick={() => setOpen(false)}>
+              Close
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
 
@@ -105,8 +153,15 @@ const AskQuestionCard = () => {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
             />
-            <div className="h-4"></div>
-            <Button type="submit" disabled={loading}>Ask GitMind</Button>
+            <MagicButton
+              title="Ask GitMind"
+              position="left"
+              icon={<Brain />}
+              disabled={loading}
+            />
+            {/* <Button type="submit" disabled={loading}>
+              Ask GitMind
+            </Button> */}
           </form>
         </CardContent>
       </Card>
