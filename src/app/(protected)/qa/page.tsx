@@ -62,14 +62,14 @@ const QAPage = () => {
                 />
                 <div className="flex flex-col text-left">
                   <div className="flex items-center gap-2">
-                    <p className="line-clamp-1 text-lg font-medium text-foreground">
+                    <p className="line-clamp-1 text-base font-medium text-foreground">
                       {question.question}
                     </p>
                     <span className="whitespace-nowrap text-sm text-muted-foreground">
                       {question.createdAt.toLocaleDateString()}
                     </span>
                   </div>
-                  <p className="line-clamp-2 text-base text-muted-foreground">
+                  <p className="line-clamp-3 text-sm text-muted-foreground">
                     {question.answer}
                   </p>
                 </div>
