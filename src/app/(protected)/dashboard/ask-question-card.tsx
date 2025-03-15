@@ -19,43 +19,38 @@ import CodeReferences from "./code-references";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import MagicButton from "@/components/ui/magic-button";
-import { Brain } from "lucide-react";
+import { Brain, Loader2, X } from "lucide-react";
 import useRefetch from "@/hooks/use-refetch";
 
 const AskQuestionCard = () => {
   const { project } = useProject();
-  const [question, setQuestion] = React.useState("");
-  const [open, setOpen] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-  const [filesReferences, setFilesReferences] = React.useState<
+  const [question, setQuestion] = useState("");
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [filesReferences, setFilesReferences] = useState<
     { fileName: string; sourceCode: string; summary: string }[]
   >([]);
-  const [answer, setAnswer] = React.useState("");
-  const [theme, setTheme] = React.useState<"light" | "dark">("light");
+  const [answer, setAnswer] = useState("");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const saveAnswer = api.project.saveAnswer.useMutation();
+  const refetch = useRefetch();
 
   // Detect theme changes
   useEffect(() => {
     const updateTheme = () => {
-      const isDark = document.documentElement.classList.contains("dark");
-      setTheme(isDark ? "dark" : "light");
+      setTheme(document.documentElement.classList.contains("dark") ? "dark" : "light");
     };
-
-    updateTheme(); // Initial check
+    updateTheme();
     const observer = new MutationObserver(updateTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     return () => observer.disconnect();
   }, []);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!project?.id || !question.trim()) return;
     setAnswer("");
     setFilesReferences([]);
-    if (!project?.id) return;
-    e.preventDefault();
     setLoading(true);
 
     const { output, filesReferences } = await askQuestion(question, project.id);
@@ -63,105 +58,97 @@ const AskQuestionCard = () => {
     setFilesReferences(filesReferences);
 
     for await (const delta of readStreamableValue(output)) {
-      if (delta) {
-        setAnswer((ans) => ans + delta);
-      }
+      if (delta) setAnswer((ans) => ans + delta);
     }
     setLoading(false);
   };
 
-  const refetch = useRefetch();
   return (
     <>
+  
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="flex max-h-[80vh] flex-col sm:max-w-[80vw]">
-          <DialogHeader>
-            <div className="flex items-center gap-2">
-              <DialogTitle className="flex items-center gap-2">
-                <Image
-                  src="/logo.svg"
-                  alt="GitMind Logo"
-                  width={40}
-                  height={40}
-                />
+        <DialogContent className="flex max-h-[85vh] w-full flex-col overflow-hidden rounded-lg bg-white p-0 shadow-xl dark:bg-gray-800 sm:max-w-2xl md:max-w-3xl">
+          <DialogHeader className="border-b border-gray-200 px-4 py-3 dark:border-gray-700">
+            <div className="flex items-center justify-between">
+              <DialogTitle className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100 sm:text-xl">
+                <Image src="/logo.svg" alt="GitMind Logo" width={32} height={32} className="h-8 w-8" />
                 Answer
               </DialogTitle>
-              <Button
-                disabled={saveAnswer.isPending}
-                variant="outline"
-                onClick={() => {
-                  saveAnswer.mutate(
-                    {
-                      projectId: project!.id,
-                      question,
-                      answer,
-                      filesReferences,
-                    },
-                    {
-                      onSuccess: () => {
-                        toast.success("Your answer has been saved!");
-                        refetch();
+              <div className="flex items-center gap-2">
+                <Button
+                  disabled={saveAnswer.isPending || !answer}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    saveAnswer.mutate(
+                      { projectId: project!.id, question, answer, filesReferences },
+                      {
+                        onSuccess: () => {
+                          toast.success("Answer saved successfully!");
+                          refetch();
+                        },
+                        onError: () => toast.error("Failed to save answer!"),
                       },
-                      onError: () => {
-                        toast.error("Failed to save your answer!");
-                      },
-                    },
-                  );
-                }}
-              >
-                Save Answer
-              </Button>
+                    );
+                  }}
+                  className="transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  {saveAnswer.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save"}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setOpen(false)}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
             </div>
           </DialogHeader>
 
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6">
             {loading ? (
               <div className="flex h-full items-center justify-center">
-                <p className="text-foreground">Loading...</p>
+                <Loader2 className="h-8 w-8 animate-spin text-gray-500 dark:text-gray-400" />
               </div>
             ) : (
-              <>
-                <div data-color-mode={theme}>
+              <div className="space-y-6">
+                <div data-color-mode={theme} className="rounded-md bg-gray-50 p-4 dark:bg-gray-900">
                   <MDEditor.Markdown
                     source={answer}
-                    className="prose dark:prose-invert max-w-none rounded-md bg-background p-4 text-foreground"
-                    style={{ minHeight: "200px" }}
+                    className="prose max-w-none text-gray-900 dark:prose-invert dark:text-gray-100"
+                    style={{ minHeight: "150px" }}
                   />
                 </div>
-                <div className="h-4" />
-                <CodeReferences fileReferences={filesReferences} />
-              </>
+                {filesReferences.length > 0 && <CodeReferences fileReferences={filesReferences} />}
+              </div>
             )}
-          </div>
-
-          <div className="flex justify-end border-t p-4">
-            <Button type="button" onClick={() => setOpen(false)}>
-              Close
-            </Button>
           </div>
         </DialogContent>
       </Dialog>
 
-      <Card className="relative col-span-3">
-        <CardHeader>
-          <CardTitle>Ask a Question</CardTitle>
+      <Card className="relative col-span-3 w-full overflow-hidden border-gray-300 bg-white shadow-lg transition-all duration-300 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800">
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100 sm:text-xl">
+            Ask a Question
+          </CardTitle>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={onSubmit}>
+        <CardContent className="p-4 sm:p-6">
+          <form onSubmit={onSubmit} className="space-y-4">
             <Textarea
               placeholder="Which file should I edit to change the home page?"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
+              className="min-h-[100px] resize-y rounded-lg border-gray-300 bg-gray-50 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-gray-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 dark:focus:border-gray-500 dark:focus:ring-gray-500 sm:text-base"
+              disabled={loading}
             />
             <MagicButton
               title="Ask GitMind"
               position="left"
-              icon={<Brain />}
-              disabled={loading}
+              icon={<Brain className="h-5 w-5" />}
+              disabled={loading || !question.trim()}
             />
-            {/* <Button type="submit" disabled={loading}>
-              Ask GitMind
-            </Button> */}
           </form>
         </CardContent>
       </Card>

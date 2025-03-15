@@ -25,7 +25,7 @@ const MagicButton = ({
 }) => {
   return (
     <button
-      className={`relative inline-flex h-12 w-full md:w-60 md:mt-5 overflow-hidden rounded-lg p-[2px] focus:outline-none ${
+      className={`sm:w-auto relative inline-flex h-12 w-full md:w-60 md:mt-5 overflow-hidden rounded-lg p-[2px] focus:outline-none ${
         disabled ? "opacity-50 cursor-not-allowed" : ""
       }`}
       onClick={(e) => {
@@ -36,9 +36,7 @@ const MagicButton = ({
       disabled={disabled} // Native HTML disabled attribute for accessibility
     >
       <span
-        className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#0077FF_50%,#E2CBFF_100%)] ${
-          disabled ? "opacity-0" : ""
-        }`}
+        className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#0077FF_50%,#E2CBFF_100%)]`}
       />
 
       <span
