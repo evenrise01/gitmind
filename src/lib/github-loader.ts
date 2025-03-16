@@ -2,6 +2,8 @@ import { GithubRepoLoader } from "@langchain/community/document_loaders/web/gith
 import { Document } from "@langchain/core/documents";
 import { generateEmbedding, summarizeCode } from "./gemini";
 import { db } from "@/server/db";
+import { Octokit } from "octokit";
+import { array } from "zod";
 
 /**
  * Loads a GitHub repository's content using LangChain's GithubRepoLoader
@@ -9,6 +11,79 @@ import { db } from "@/server/db";
  * @param githubToken - Optional GitHub access token for private repositories
  * @returns Array of Document objects containing the repository's files
  */
+
+// Recursively counts the total number of files in a GitHub repository starting from a given path
+const getFileCount = async (
+  path: string, // The path in the repository to start counting from (e.g., "" for root, "src" for a folder)
+  octokit: Octokit, // Octokit instance to interact with the GitHub API
+  githubOwner: string, // Owner of the repository (e.g., a username or organization)
+  githubRepo: string, // Name of the repository
+  acc: number = 0, // Accumulator to track the total file count across recursive calls, defaults to 0
+): Promise<number> => {
+  // Fetch the contents of the repository at the specified path using the GitHub API
+  const { data } = await octokit.rest.repos.getContent({
+    owner: githubOwner,
+    repo: githubRepo,
+    path,
+  });
+
+  // Base case: If the path points to a single file (data is not an array and type is "file")
+  if (!Array.isArray(data) && data.type === "file") {
+    return acc + 1; // Increment the accumulator by 1 for this file and return
+  }
+
+  // Recursive case: If the path points to a directory (data is an array of items)
+  if (Array.isArray(data)) {
+    let fileCount = 0; // Track the number of files directly in this directory
+    const directories: string[] = []; // Store paths of subdirectories to process recursively
+
+    // Iterate over each item in the directory
+    for (const item of data) {
+      if (item.type === "dir") {
+        // If the item is a directory, add its path to the directories array for recursive processing
+        directories.push(item.path);
+      } else {
+        // If the item is a file, increment the file count for this directory
+        fileCount++;
+      }
+    }
+
+    // If there are subdirectories, recursively count the files in each one
+    if (directories.length > 0) {
+      // Use Promise.all to process all subdirectories in parallel
+      const directoryCounts = await Promise.all(
+        directories.map((dirPath) =>
+          getFileCount(dirPath, octokit, githubOwner, githubRepo, 0)
+        )
+      );
+      // Sum the file counts from all subdirectories and add to the current fileCount
+      fileCount += directoryCounts.reduce((sum, count) => sum + count, 0);
+    }
+
+    // Return the accumulator plus the total file count for this directory (including its subdirectories)
+    return acc + fileCount;
+  }
+
+  // Edge case: If data is neither a file nor a directory, return the accumulator unchanged
+  return acc;
+};
+
+export default getFileCount;
+
+export const checkCredits = async (githubUrl: string, githubToken?: string) => {
+  //Find out how many files are there in the repo
+
+  const octokit = new Octokit({ auth: githubToken });
+  const githubOwner = githubUrl.split("/")[3];
+  const githubRepo = githubUrl.split("/")[4];
+
+  if (!githubOwner || !githubRepo) {
+    return 0;
+  }
+ const fileCount = await getFileCount('', octokit, githubOwner, githubRepo, 0)
+ return fileCount
+};
+
 export const loadGithubRepo = async (
   githubUrl: string,
   githubToken?: string,

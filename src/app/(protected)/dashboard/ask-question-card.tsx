@@ -65,7 +65,6 @@ const AskQuestionCard = () => {
 
   return (
     <>
-  
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="flex max-h-[85vh] w-full flex-col overflow-hidden rounded-lg bg-white p-0 shadow-xl dark:bg-gray-800 sm:max-w-2xl md:max-w-3xl">
           <DialogHeader className="border-b border-gray-200 px-4 py-3 dark:border-gray-700">
@@ -91,18 +90,11 @@ const AskQuestionCard = () => {
                       },
                     );
                   }}
-                  className="transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 mr-8"
                 >
                   {saveAnswer.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save"}
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setOpen(false)}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-                >
-                  <X className="h-5 w-5" />
-                </Button>
+                {/* Custom close button removed; relying on Dialog's built-in close */}
               </div>
             </div>
           </DialogHeader>

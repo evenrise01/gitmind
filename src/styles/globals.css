@@ -83,3 +83,9 @@
     @apply bg-background text-foreground
   }
 }
+
+@layer utilities {
+  .glow-effect {
+    filter: drop-shadow(0 0 4px rgba(76, 120, 148, 0.6)); /* Matches #4c7894 hue */
+  }
+}
