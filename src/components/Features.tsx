@@ -3,7 +3,10 @@ import { Shield, Users } from "lucide-react";
 
 export default function FeaturesSection() {
   return (
-    <section className="bg-gray-50 py-16 dark:bg-transparent md:py-32">
+    <section
+      id="#features"
+      className="bg-gray-50 py-16 dark:bg-transparent md:py-32"
+    >
       <div className="mx-auto max-w-5xl px-6">
         <div className="relative">
           <div className="text-center">
@@ -14,7 +17,6 @@ export default function FeaturesSection() {
               Unlock the power of AI-driven tools designed for speed, security,
               and collaboration.
             </p>
-
           </div>
           <div className="relative z-10 grid grid-cols-6 gap-3">
             {/* Feature 1: Powered by AI */}

@@ -2,7 +2,8 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { HoverBorderGradient } from "./ui/hover-border-gradient";
+import MagicButton from "./ui/magic-button";
+import { ChevronRight } from "lucide-react";
 
 // Animation variants
 const containerVariants = {
@@ -41,7 +42,7 @@ export default function CallToAction() {
   return (
     <section className="py-16">
       <motion.div
-        className="mx-auto max-w-5xl rounded-3xl border bg-gradient-to-b from-gray-50 to-white px-6 py-12 dark:from-gray-900 dark:to-gray-800 md:py-20 lg:py-32"
+        className="mx-auto max-w-5xl rounded-3xl border bg-gradient-to-b from-blue-50 via-indigo-50 to-white px-6 py-12 dark:from-gray-900 dark:to-gray-800 md:py-20 lg:py-32"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -58,7 +59,8 @@ export default function CallToAction() {
             className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground"
             variants={childVariants}
           >
-            Get actionable insights from your code repositories, streamline collaboration, and boost productivity.
+            Get actionable insights from your code repositories, streamline
+            collaboration, and boost productivity.
           </motion.p>
 
           <motion.div
@@ -70,15 +72,13 @@ export default function CallToAction() {
               whileHover="hover"
               whileTap="tap"
             >
-              <HoverBorderGradient
-                containerClassName="rounded-full"
-                as="button"
-                className="flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-500 text-white dark:from-purple-700 dark:to-blue-600 px-6 py-3 text-base font-medium"
-              >
-                <Link href="/">
-                  <span>Get Started</span>
-                </Link>
-              </HoverBorderGradient>
+              <Link href="/sign-up">
+                <MagicButton
+                  title="Get Started"
+                  position="right"
+                  icon={<ChevronRight className="h-5 w-5" />}
+                />
+              </Link>
             </motion.div>
           </motion.div>
         </div>

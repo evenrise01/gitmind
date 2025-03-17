@@ -36,7 +36,7 @@ const buttonVariants = {
 // Git commit animation variants
 const gitNodeVariants = {
   initial: { scale: 0, opacity: 0 },
-  animate: (custom) => ({
+  animate: (custom: number) => ({
     scale: 1,
     opacity: 1,
     transition: {
@@ -49,7 +49,7 @@ const gitNodeVariants = {
 
 const gitLineVariants = {
   initial: { pathLength: 0, opacity: 0 },
-  animate: (custom) => ({
+  animate: (custom: number) => ({
     pathLength: 1,
     opacity: 0.6,
     transition: {
@@ -63,7 +63,7 @@ const gitLineVariants = {
 // Code knowledge animation variants
 const codeLineVariants = {
   initial: { width: 0, opacity: 0 },
-  animate: (custom) => ({
+  animate: (custom: number) => ({
     width: "100%",
     opacity: 0.7,
     transition: {
@@ -77,7 +77,7 @@ const codeLineVariants = {
 // Meeting summary animation variants
 const meetingNoteVariants = {
   initial: { scaleX: 0, opacity: 0, originX: 0 },
-  animate: (custom) => ({
+  animate: (custom: number) => ({
     scaleX: 1,
     opacity: 0.5,
     transition: {
@@ -104,7 +104,7 @@ const aiPulseVariants = {
 
 const aiConnectionVariants = {
   initial: { pathLength: 0, opacity: 0 },
-  animate: (custom) => ({
+  animate: (custom: number) => ({
     pathLength: 1,
     opacity: 0.4,
     transition: {
@@ -168,25 +168,9 @@ export default function HeroSection() {
                       size="lg"
                       className="h-12 rounded-full bg-primary pl-5 pr-3 text-base text-white hover:bg-primary/90"
                     >
-                      <Link href="/get-started">
+                      <Link href="/sign-up">
                         <span className="text-nowrap">Get Started</span>
                         <ChevronRight className="ml-2 size-5" />
-                      </Link>
-                    </Button>
-                  </motion.div>
-                  <motion.div
-                    variants={buttonVariants}
-                    whileHover="hover"
-                    whileTap="tap"
-                  >
-                    <Button
-                      asChild
-                      size="lg"
-                      variant="outline"
-                      className="h-12 rounded-full border-gray-300 px-5 text-base hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
-                    >
-                      <Link href="/demo">
-                        <span className="text-nowrap">Request Demo</span>
                       </Link>
                     </Button>
                   </motion.div>
@@ -252,7 +236,7 @@ export default function HeroSection() {
                   {/* Git graph */}
                   <motion.circle
                     cx="200"
-                    cy="250"
+                    cy="200" // Changed from 250
                     r="8"
                     fill="#10b981"
                     variants={gitNodeVariants}
@@ -262,7 +246,7 @@ export default function HeroSection() {
                   />
                   <motion.circle
                     cx="260"
-                    cy="200"
+                    cy="150" // Changed from 200
                     r="8"
                     fill="#10b981"
                     variants={gitNodeVariants}
@@ -272,7 +256,7 @@ export default function HeroSection() {
                   />
                   <motion.circle
                     cx="320"
-                    cy="250"
+                    cy="200" // Changed from 250
                     r="8"
                     fill="#10b981"
                     variants={gitNodeVariants}
@@ -282,7 +266,7 @@ export default function HeroSection() {
                   />
                   <motion.circle
                     cx="380"
-                    cy="180"
+                    cy="130" // Changed from 180
                     r="8"
                     fill="#10b981"
                     variants={gitNodeVariants}
@@ -292,7 +276,7 @@ export default function HeroSection() {
                   />
                   <motion.circle
                     cx="440"
-                    cy="250"
+                    cy="200" // Changed from 250
                     r="8"
                     fill="#10b981"
                     variants={gitNodeVariants}
@@ -302,7 +286,7 @@ export default function HeroSection() {
                   />
 
                   <motion.path
-                    d="M200,250 L260,200"
+                    d="M200,200 L260,150" // Changed from M200,250 L260,200
                     stroke="#10b981"
                     strokeWidth="2"
                     strokeLinecap="round"
@@ -312,7 +296,7 @@ export default function HeroSection() {
                     animate="animate"
                   />
                   <motion.path
-                    d="M260,200 L320,250"
+                    d="M260,150 L320,200" // Changed from M260,200 L320,250
                     stroke="#10b981"
                     strokeWidth="2"
                     strokeLinecap="round"
@@ -322,7 +306,7 @@ export default function HeroSection() {
                     animate="animate"
                   />
                   <motion.path
-                    d="M320,250 L380,180"
+                    d="M320,200 L380,130" // Changed from M320,250 L380,180
                     stroke="#10b981"
                     strokeWidth="2"
                     strokeLinecap="round"
@@ -332,7 +316,7 @@ export default function HeroSection() {
                     animate="animate"
                   />
                   <motion.path
-                    d="M380,180 L440,250"
+                    d="M380,130 L440,200" // Changed from M380,180 L440,250
                     stroke="#10b981"
                     strokeWidth="2"
                     strokeLinecap="round"
@@ -345,7 +329,7 @@ export default function HeroSection() {
                   {/* Commit messages */}
                   <motion.rect
                     x="180"
-                    y="280"
+                    y="230" // Changed from 280
                     width="40"
                     height="6"
                     rx="3"
@@ -358,7 +342,7 @@ export default function HeroSection() {
                   />
                   <motion.rect
                     x="180"
-                    y="290"
+                    y="240" // Changed from 290
                     width="60"
                     height="4"
                     rx="2"
@@ -371,7 +355,7 @@ export default function HeroSection() {
                   />
                   <motion.rect
                     x="300"
-                    y="280"
+                    y="230" // Changed from 280
                     width="40"
                     height="6"
                     rx="3"
@@ -384,7 +368,7 @@ export default function HeroSection() {
                   />
                   <motion.rect
                     x="300"
-                    y="290"
+                    y="240" // Changed from 290
                     width="60"
                     height="4"
                     rx="2"
@@ -397,7 +381,7 @@ export default function HeroSection() {
                   />
                   <motion.rect
                     x="420"
-                    y="280"
+                    y="230" // Changed from 280
                     width="40"
                     height="6"
                     rx="3"
@@ -410,7 +394,7 @@ export default function HeroSection() {
                   />
                   <motion.rect
                     x="420"
-                    y="290"
+                    y="240" // Changed from 290
                     width="60"
                     height="4"
                     rx="2"
@@ -422,6 +406,19 @@ export default function HeroSection() {
                     animate="animate"
                   />
                 </g>
+
+                {/* Connect Git to AI - Also needs adjustment */}
+                <motion.path
+                  d="M440,200 C500,200 520,230 560,300" // Changed from M440,250 C500,250 520,280 560,300
+                  stroke="#10b981"
+                  strokeWidth="1.5"
+                  strokeDasharray="4 2"
+                  strokeLinecap="round"
+                  variants={aiConnectionVariants}
+                  custom={0}
+                  initial="initial"
+                  animate="animate"
+                />
 
                 {/* Connect Git to AI */}
                 <motion.path

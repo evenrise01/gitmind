@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Define the Satoshi font family */
+.font-satoshi {
+  font-family: "Satoshi", sans-serif;
+}
+
+/* Optional: Set it as the default font for all elements */
+body {
+  font-family: "Satoshi", sans-serif;
+}
 
 @layer base {
   :root {

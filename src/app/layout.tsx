@@ -1,13 +1,12 @@
 import "@/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-
 import { TRPCReactProvider } from "@/trpc/react";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "sonner";
 
+// Define metadata
 export const metadata: Metadata = {
   title: "GitMind",
   description: "Understand your GitHub codebase",
@@ -18,13 +17,17 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <ClerkProvider>
-      <html
-        lang="en"
-        className={`${GeistSans.variable}`}
-        suppressHydrationWarning
-      >
-        <body>
+    <ClerkProvider
+    >
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          {/* Import Satoshi font from Fontshare CDN */}
+          <link
+            href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap"
+            rel="stylesheet"
+          />
+        </head>
+        <body className="font-satoshi">
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -32,7 +35,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <TRPCReactProvider>{children}</TRPCReactProvider>
-            <Toaster richColors/>
+            <Toaster richColors />
           </ThemeProvider>
         </body>
       </html>

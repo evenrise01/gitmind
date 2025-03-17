@@ -40,10 +40,12 @@ export default function Pricing() {
     setExpandedFaq(expandedFaq === index ? null : index);
   };
 
+  // Updated credit packages to match the pricing from the Billing page
+  // Using the formula: price = (credits / 50).toFixed(2)
   const creditPackages = [
-    { amount: 100, price: 9.99, popular: false },
-    { amount: 250, price: 19.99, popular: true },
-    { amount: 500, price: 29.99, popular: false },
+    { amount: 100, price: (100 / 50).toFixed(2), popular: false },
+    { amount: 250, price: (250 / 50).toFixed(2), popular: true },
+    { amount: 500, price: (500 / 50).toFixed(2), popular: false },
   ];
 
   const faqs = [
@@ -75,7 +77,7 @@ export default function Pricing() {
   };
 
   return (
-    <section className="bg-gradient-to-b from-background to-background/80 py-16 md:py-32">
+    <section id = "#pricing" className="bg-gradient-to-b from-background to-background/80 py-16 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-2xl space-y-6 text-center">
           <motion.div
@@ -289,7 +291,7 @@ export default function Pricing() {
                     className={`w-full ${pkg.popular ? "bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600" : "variant-outline"}`}
                   >
                     <Link
-                      href=""
+                      href="/billing"
                       className="flex items-center justify-center gap-2"
                     >
                       <CreditCard className="h-4 w-4" />
