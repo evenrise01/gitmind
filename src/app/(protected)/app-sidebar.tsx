@@ -1,5 +1,5 @@
 "use client";
-import { Logo } from '@/components/logo'
+import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
   Sidebar,
@@ -9,8 +9,8 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuButton,
   useSidebar,
 } from "@/components/ui/sidebar";
 import useProject from "@/hooks/use-project";
@@ -22,6 +22,7 @@ import {
   LayoutDashboard,
   Plus,
   Presentation,
+  ChevronLeft, // Added for collapse button icon
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -52,15 +53,19 @@ const items = [
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { open } = useSidebar();
-  const {projects, projectId, setProjectId} = useProject()
+  const { open, setOpen } = useSidebar(); // Added setOpen to toggle the sidebar
+  const { projects, projectId, setProjectId } = useProject();
 
+  // Handle sidebar collapse
+  const toggleSidebar = () => {
+    setOpen(!open);
+  };
 
   return (
     <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader>
         <div className="flex items-center gap-2">
-        <Logo className="h-8 w-8"/>
+          <Logo className="h-8 w-8" />
           {open && (
             <h1 className="text-xl font-bold text-primary/80">GitMind</h1>
           )}
@@ -106,7 +111,7 @@ export function AppSidebar() {
                   <SidebarMenuItem key={index}>
                     <SidebarMenuButton asChild>
                       <div onClick={() => {
-                        setProjectId(project.id)
+                        setProjectId(project.id);
                       }}>
                         <div
                           className={cn(
@@ -141,6 +146,24 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      {/* Collapsible Button (outside SidebarContent) */}
+      <div className="p-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleSidebar}
+          aria-label={open ? "Collapse Sidebar" : "Expand Sidebar"}
+          className="w-full justify-center"
+        >
+          <ChevronLeft
+            className={cn(
+              "h-6 w-6 transition-transform duration-200",
+              !open && "rotate-180" // Rotate when collapsed to indicate expand
+            )}
+          />
+        </Button>
+      </div>
     </Sidebar>
   );
 }
