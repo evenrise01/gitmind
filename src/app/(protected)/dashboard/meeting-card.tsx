@@ -86,13 +86,13 @@ const MeetingCard = () => {
           },
           {
             onSuccess: (meeting) => {
-              toast.success("Meeting uploaded successfully. Check the meetings tab!");
+              toast.success("Meeting uploaded successfully!");
               setIsSuccess(true); // Show success state
               setTimeout(() => {
                 setIsSuccess(false); // Reset success state after animation
                 setIsUploading(false); // Reset uploading state
                 setProgress(0); // Reset progress
-                // Do not navigate; stay on the same page
+                router.push("/meetings");
                 processMeeting.mutateAsync({
                   meetingUrl: downloadUrl,
                   meetingId: meeting.id,
