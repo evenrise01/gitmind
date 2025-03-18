@@ -2,7 +2,7 @@
 
 import MDEditor from "@uiw/react-md-editor";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -19,8 +19,9 @@ import CodeReferences from "./code-references";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import MagicButton from "@/components/ui/magic-button";
-import { Brain, Loader2, X } from "lucide-react";
+import { Loader2} from "lucide-react";
 import useRefetch from "@/hooks/use-refetch";
+import { Logo } from "@/components/logo";
 
 const AskQuestionCard = () => {
   const { project } = useProject();
@@ -125,6 +126,7 @@ const AskQuestionCard = () => {
           <CardTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100 sm:text-xl">
             Ask a Question
           </CardTitle>
+          <CardDescription><strong>GitMind</strong> has knowledge of your Github Repository.</CardDescription>
         </CardHeader>
         <CardContent className="p-4 sm:p-6">
           <form onSubmit={onSubmit} className="space-y-4">
@@ -138,7 +140,7 @@ const AskQuestionCard = () => {
             <MagicButton
               title="Ask GitMind"
               position="left"
-              icon={<Brain className="h-5 w-5" />}
+              icon={<Logo className="h-5 w-5" />}
               disabled={loading || !question.trim()}
             />
           </form>

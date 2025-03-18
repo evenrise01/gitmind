@@ -1,10 +1,11 @@
+"use client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Shield, Users } from "lucide-react";
 
 export default function FeaturesSection() {
   return (
     <section
-      id="#features"
+      id="features"
       className="bg-gray-50 py-16 dark:bg-transparent md:py-32"
     >
       <div className="mx-auto max-w-5xl px-6">
@@ -20,210 +21,289 @@ export default function FeaturesSection() {
           </div>
           <div className="relative z-10 grid grid-cols-6 gap-3">
             {/* Feature 1: Powered by AI */}
-            <Card className="relative col-span-full flex overflow-hidden rounded-xl lg:col-span-2">
-              <CardContent className="relative m-auto size-fit pt-6">
-                <div className="relative flex h-24 w-56 items-center justify-center">
+            <Card className="relative col-span-full flex overflow-hidden rounded-xl bg-gray-50 dark:bg-transparent lg:col-span-2">
+              <CardContent className="relative flex h-full w-full flex-col items-center justify-center p-6">
+                <div className="flex h-32 w-64 items-center justify-center">
                   <svg
-                    className="size-16 text-muted" // 64px x 64px
+                    className="text-primary-600 dark:text-primary-400 size-[6rem] sm:size-[8rem]"
                     viewBox="0 0 100 100"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    {/* Outer chip boundary */}
+                    {/* Central CPU chip */}
                     <rect
-                      x="10"
-                      y="10"
-                      width="80"
-                      height="80"
-                      rx="4"
+                      x="25"
+                      y="25"
+                      width="50"
+                      height="50"
+                      rx="2"
+                      className="fill-slate-200 dark:fill-slate-700"
                       stroke="currentColor"
                       strokeWidth="2"
-                      fill="none"
-                      opacity="0.3"
                     />
 
-                    {/* Intricate circuit paths with glow and hue */}
+                    {/* CPU grid lines */}
                     <path
-                      className="glow-effect stroke-[#4c7894]"
-                      d="M20 25 H40 V35 H30 V45 H50 M60 25 H80 V35 H70 V45 H50 M30 55 H70 V65 H50 V75 H60"
-                      strokeWidth="1.5"
+                      d="M35 25 L35 75 M45 25 L45 75 M55 25 L55 75 M65 25 L65 75"
+                      stroke="currentColor"
+                      strokeWidth="0.5"
+                      opacity="0.5"
+                    />
+                    <path
+                      d="M25 35 L75 35 M25 45 L75 45 M25 55 L75 55 M25 65 L75 65"
+                      stroke="currentColor"
+                      strokeWidth="0.5"
+                      opacity="0.5"
+                    />
+
+                    {/* Central processor core with animation */}
+                    <rect
+                      x="40"
+                      y="40"
+                      width="20"
+                      height="20"
+                      className="fill-primary-500 dark:fill-primary-400"
                       opacity="0.8"
-                    />
+                    >
+                      <animate
+                        attributeName="opacity"
+                        values="0.8;1;0.8"
+                        dur="2s"
+                        repeatCount="indefinite"
+                      />
+                    </rect>
+
+                    {/* Connection lines from CPU to outer pins */}
                     <path
-                      className="glow-effect stroke-[#4c7894]"
-                      d="M40 35 H60 M50 45 H70 M40 65 H60 M20 75 H40 M60 75 H80"
-                      strokeWidth="1"
+                      d="M25 35 L10 35 M25 45 L10 45 M25 55 L10 55 M25 65 L10 65"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
                       opacity="0.7"
+                      className="stroke-primary-500 dark:stroke-primary-400"
                     />
-
-                    {/* Additional circuit details */}
                     <path
-                      className="glow-effect stroke-[#4c7894]"
-                      d="M25 30 H35 V40 M65 30 H75 V40 M45 50 H55 V60"
+                      d="M75 35 L90 35 M75 45 L90 45 M75 55 L90 55 M75 65 L90 65"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      opacity="0.7"
+                      className="stroke-primary-500 dark:stroke-primary-400"
+                    />
+                    <path
+                      d="M35 25 L35 10 M45 25 L45 10 M55 25 L55 10 M65 25 L65 10"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      opacity="0.7"
+                      className="stroke-primary-500 dark:stroke-primary-400"
+                    />
+                    <path
+                      d="M35 75 L35 90 M45 75 L45 90 M55 75 L55 90 M65 75 L65 90"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      opacity="0.7"
+                      className="stroke-primary-500 dark:stroke-primary-400"
+                    />
+
+                    {/* Animated data flow pulses */}
+                    <circle
+                      cx="10"
+                      cy="35"
+                      r="2"
+                      className="fill-primary-500 dark:fill-primary-400"
+                    >
+                      <animate
+                        attributeName="opacity"
+                        values="0;1;0"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                        begin="0s"
+                      />
+                    </circle>
+                    <circle
+                      cx="10"
+                      cy="55"
+                      r="2"
+                      className="fill-primary-500 dark:fill-primary-400"
+                    >
+                      <animate
+                        attributeName="opacity"
+                        values="0;1;0"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                        begin="0.3s"
+                      />
+                    </circle>
+                    <circle
+                      cx="90"
+                      cy="45"
+                      r="2"
+                      className="fill-primary-500 dark:fill-primary-400"
+                    >
+                      <animate
+                        attributeName="opacity"
+                        values="0;1;0"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                        begin="0.6s"
+                      />
+                    </circle>
+                    <circle
+                      cx="90"
+                      cy="65"
+                      r="2"
+                      className="fill-primary-500 dark:fill-primary-400"
+                    >
+                      <animate
+                        attributeName="opacity"
+                        values="0;1;0"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                        begin="0.9s"
+                      />
+                    </circle>
+                    <circle
+                      cx="45"
+                      cy="10"
+                      r="2"
+                      className="fill-primary-500 dark:fill-primary-400"
+                    >
+                      <animate
+                        attributeName="opacity"
+                        values="0;1;0"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                        begin="1.2s"
+                      />
+                    </circle>
+                    <circle
+                      cx="65"
+                      cy="10"
+                      r="2"
+                      className="fill-primary-500 dark:fill-primary-400"
+                    >
+                      <animate
+                        attributeName="opacity"
+                        values="0;1;0"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                        begin="1.5s"
+                      />
+                    </circle>
+                    <circle
+                      cx="35"
+                      cy="90"
+                      r="2"
+                      className="fill-primary-500 dark:fill-primary-400"
+                    >
+                      <animate
+                        attributeName="opacity"
+                        values="0;1;0"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                        begin="1.8s"
+                      />
+                    </circle>
+                    <circle
+                      cx="55"
+                      cy="90"
+                      r="2"
+                      className="fill-primary-500 dark:fill-primary-400"
+                    >
+                      <animate
+                        attributeName="opacity"
+                        values="0;1;0"
+                        dur="1.5s"
+                        repeatCount="indefinite"
+                        begin="2.1s"
+                      />
+                    </circle>
+
+                    {/* Circular background glow */}
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="45"
+                      className="stroke-primary-500/30 dark:stroke-primary-400/30"
                       strokeWidth="1"
-                      opacity="0.6"
-                    />
-
-                    {/* Chip components (rectangles and squares) */}
-                    <rect
-                      x="42"
-                      y="28"
-                      width="6"
-                      height="6"
-                      fill="currentColor"
-                      opacity="0.4"
-                    />
-                    <rect
-                      x="52"
-                      y="28"
-                      width="6"
-                      height="6"
-                      fill="currentColor"
-                      opacity="0.4"
-                    />
-                    <rect
-                      x="35"
-                      y="48"
-                      width="8"
-                      height="5"
-                      fill="currentColor"
-                      opacity="0.3"
-                    />
-                    <rect
-                      x="65"
-                      y="48"
-                      width="8"
-                      height="5"
-                      fill="currentColor"
-                      opacity="0.3"
-                    />
-                    <rect
-                      x="45"
-                      y="68"
-                      width="5"
-                      height="5"
-                      fill="currentColor"
-                      opacity="0.35"
-                    />
-                    <rect
-                      x="55"
-                      y="68"
-                      width="5"
-                      height="5"
-                      fill="currentColor"
-                      opacity="0.35"
-                    />
-
-                    {/* Pins on all sides for more complexity */}
-                    <rect
-                      x="5"
-                      y="30"
-                      width="5"
-                      height="8"
-                      fill="currentColor"
-                      opacity="0.5"
-                    />
-                    <rect
-                      x="5"
-                      y="45"
-                      width="5"
-                      height="8"
-                      fill="currentColor"
-                      opacity="0.5"
-                    />
-                    <rect
-                      x="5"
-                      y="60"
-                      width="5"
-                      height="8"
-                      fill="currentColor"
-                      opacity="0.5"
-                    />
-                    <rect
-                      x="90"
-                      y="30"
-                      width="5"
-                      height="8"
-                      fill="currentColor"
-                      opacity="0.5"
-                    />
-                    <rect
-                      x="90"
-                      y="45"
-                      width="5"
-                      height="8"
-                      fill="currentColor"
-                      opacity="0.5"
-                    />
-                    <rect
-                      x="90"
-                      y="60"
-                      width="5"
-                      height="8"
-                      fill="currentColor"
-                      opacity="0.5"
-                    />
-                    <rect
-                      x="30"
-                      y="5"
-                      width="8"
-                      height="5"
-                      fill="currentColor"
-                      opacity="0.5"
-                    />
-                    <rect
-                      x="45"
-                      y="5"
-                      width="8"
-                      height="5"
-                      fill="currentColor"
-                      opacity="0.5"
-                    />
-                    <rect
-                      x="60"
-                      y="5"
-                      width="8"
-                      height="5"
-                      fill="currentColor"
-                      opacity="0.5"
-                    />
-                    <rect
-                      x="30"
-                      y="90"
-                      width="8"
-                      height="5"
-                      fill="currentColor"
-                      opacity="0.5"
-                    />
-                    <rect
-                      x="45"
-                      y="90"
-                      width="8"
-                      height="5"
-                      fill="currentColor"
-                      opacity="0.5"
-                    />
-                    <rect
-                      x="60"
-                      y="90"
-                      width="8"
-                      height="5"
-                      fill="currentColor"
-                      opacity="0.5"
-                    />
+                      fill="none"
+                    >
+                      <animate
+                        attributeName="r"
+                        values="45;48;45"
+                        dur="3s"
+                        repeatCount="indefinite"
+                      />
+                      <animate
+                        attributeName="opacity"
+                        values="0.3;0.5;0.3"
+                        dur="3s"
+                        repeatCount="indefinite"
+                      />
+                    </circle>
                   </svg>
                 </div>
-                <h2 className="mt-6 text-center text-3xl font-semibold text-black dark:text-white">
+                <h2 className="mt-6 text-center text-lg font-semibold text-black dark:text-white">
                   Powered by AI
                 </h2>
+                <p className="mt-2 text-center text-foreground">
+                  Advanced machine learning algorithms working for you
+                </p>
               </CardContent>
             </Card>
 
             {/* Feature 2: Secured Authentication */}
-            <Card className="relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-2">
+            <Card className="group relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-2">
               <CardContent className="relative pt-6">
                 <div className="relative mx-auto flex aspect-square size-32 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
-                  <Shield className="m-auto size-12" strokeWidth={1} />
+                  {/* Static cyan glow background */}
+                  <div className="absolute inset-0 rounded-full bg-cyan-500/0 transition-colors duration-300 group-hover:bg-cyan-500/10 dark:group-hover:bg-cyan-400/15"></div>
+
+                  {/* Expanding cyan ring */}
+                  <div
+                    className="duration-1500 absolute inset-0 scale-0 rounded-full border-2 border-cyan-500/0 opacity-0 transition-all group-hover:scale-125 group-hover:border-cyan-500/40 group-hover:opacity-100 dark:group-hover:border-cyan-400/40"
+                    style={{
+                      boxShadow: "0 0 0 0 rgba(6, 182, 212, 0)",
+                      transition: "all 1.5s",
+                    }}
+                  ></div>
+
+                  {/* Expanding blue ring with delay */}
+                  <div
+                    className="duration-2000 group-hover:scale-130 absolute inset-0 scale-0 rounded-full border border-blue-500/0 opacity-0 transition-all delay-300 group-hover:border-blue-500/30 group-hover:opacity-100 dark:group-hover:border-blue-400/30"
+                    style={{
+                      boxShadow: "0 0 0 0 rgba(59, 130, 246, 0)",
+                      transition: "all 2s 0.3s",
+                    }}
+                  ></div>
+
+                  {/* Pulsating cyan ring effect */}
+                  <div
+                    className="absolute inset-0 rounded-full border-2 border-cyan-500/0 opacity-0 group-hover:border-cyan-500/50 group-hover:opacity-100 dark:group-hover:border-cyan-400/50"
+                    style={{
+                      boxShadow: "0 0 0 0 rgba(6, 182, 212, 0)",
+                      animation: "none",
+                    }}
+                  ></div>
+
+                  {/* Shield icon with subtle grow effect and custom color */}
+                  <Shield
+                    className="m-auto size-12 transition-transform duration-300 group-hover:scale-110 text-cyan-600"
+                    strokeWidth={1.5}
+                  />
+
+                  {/* CSS keyframes for custom glow animation */}
+                  <style jsx>{`
+                    @keyframes glow {
+                      0% {
+                        box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4);
+                      }
+                      70% {
+                        box-shadow: 0 0 0 10px rgba(6, 182, 212, 0);
+                      }
+                      100% {
+                        box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
+                      }
+                    }
+                  `}</style>
                 </div>
                 <div className="relative mt-6 space-y-2 rounded-xl text-center">
                   <h2 className="text-lg font-medium transition dark:text-white">
@@ -241,48 +321,50 @@ export default function FeaturesSection() {
             <Card className="relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-2">
               <CardContent className="relative pt-6">
                 <div className="pt-6 lg:px-6">
-                  <svg
-                    className="w-full dark:text-muted-foreground"
-                    viewBox="0 0 386 123"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    {/* SVG remains unchanged */}
-                    <rect width="386" height="123" rx="10" />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M3 123C3 123 14.3298 94.153 35.1282 88.0957C55.9266 82.0384 65.9333 80.5508 65.9333 80.5508C65.9333 80.5508 80.699 80.5508 92.1777 80.5508C103.656 80.5508 100.887 63.5348 109.06 63.5348C117.233 63.5348 117.217 91.9728 124.78 91.9728C132.343 91.9728 142.264 78.03 153.831 80.5508C165.398 83.0716 186.825 91.9728 193.761 91.9728C200.697 91.9728 206.296 63.5348 214.07 63.5348C221.844 63.5348 238.653 93.7771 244.234 91.9728C249.814 90.1684 258.8 60 266.19 60C272.075 60 284.1 88.057 286.678 88.0957C294.762 88.2171 300.192 72.9284 305.423 72.9284C312.323 72.9284 323.377 65.2437 335.553 63.5348C347.729 61.8259 348.218 82.07 363.639 80.5508C367.875 80.1335 372.949 82.2017 376.437 87.1008C379.446 91.3274 381.054 97.4325 382.521 104.647C383.479 109.364 382.521 123 382.521 123"
-                      fill="url(#paint0_linear_0_106)"
-                    />
-                    <path
-                      className="text-primary-600 dark:text-primary-500"
-                      d="M3 121.077C3 121.077 15.3041 93.6691 36.0195 87.756C56.7349 81.8429 66.6632 80.9723 66.6632 80.9723C66.6632 80.9723 80.0327 80.9723 91.4656 80.9723C102.898 80.9723 100.415 64.2824 108.556 64.2824C116.696 64.2824 117.693 92.1332 125.226 92.1332C132.759 92.1332 142.07 78.5115 153.591 80.9723C165.113 83.433 186.092 92.1332 193 92.1332C199.908 92.1332 205.274 64.2824 213.017 64.2824C220.76 64.2824 237.832 93.8946 243.39 92.1332C248.948 90.3718 257.923 60.5 265.284 60.5C271.145 60.5 283.204 87.7182 285.772 87.756C293.823 87.8746 299.2 73.0802 304.411 73.0802C311.283 73.0802 321.425 65.9506 333.552 64.2824C345.68 62.6141 346.91 82.4553 362.27 80.9723C377.629 79.4892 383 106.605 383 106.605"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                    />
-                    <defs>
-                      <linearGradient
-                        id="paint0_linear_0_106"
-                        x1="3"
-                        y1="60"
-                        x2="3"
-                        y2="123"
-                        gradientUnits="userSpaceOnUse"
-                      >
-                        <stop
-                          className="text-primary/15 dark:text-primary/35"
-                          stopColor="currentColor"
-                        />
-                        <stop
-                          className="text-transparent"
-                          offset="1"
-                          stopColor="currentColor"
-                          stopOpacity="0.103775"
-                        />
-                      </linearGradient>
-                    </defs>
-                  </svg>
+                  <div className="group relative">
+                    <svg
+                      className="group-hover:filter-[drop-shadow(0_0_10px_rgba(59,130,246,0.7))] group-hover:dark:filter-[drop-shadow(0_0_10px_rgba(59,130,246,0.5))] w-full transition-all duration-300 ease-in-out dark:text-muted-foreground"
+                      viewBox="0 0 386 123"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      {/* SVG remains unchanged */}
+                      <rect width="386" height="123" rx="10" />
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M3 123C3 123 14.3298 94.153 35.1282 88.0957C55.9266 82.0384 65.9333 80.5508 65.9333 80.5508C65.9333 80.5508 80.699 80.5508 92.1777 80.5508C103.656 80.5508 100.887 63.5348 109.06 63.5348C117.233 63.5348 117.217 91.9728 124.78 91.9728C132.343 91.9728 142.264 78.03 153.831 80.5508C165.398 83.0716 186.825 91.9728 193.761 91.9728C200.697 91.9728 206.296 63.5348 214.07 63.5348C221.844 63.5348 238.653 93.7771 244.234 91.9728C249.814 90.1684 258.8 60 266.19 60C272.075 60 284.1 88.057 286.678 88.0957C294.762 88.2171 300.192 72.9284 305.423 72.9284C312.323 72.9284 323.377 65.2437 335.553 63.5348C347.729 61.8259 348.218 82.07 363.639 80.5508C367.875 80.1335 372.949 82.2017 376.437 87.1008C379.446 91.3274 381.054 97.4325 382.521 104.647C383.479 109.364 382.521 123 382.521 123"
+                        fill="url(#paint0_linear_0_106)"
+                      />
+                      <path
+                        className="text-primary-600 dark:text-primary-500"
+                        d="M3 121.077C3 121.077 15.3041 93.6691 36.0195 87.756C56.7349 81.8429 66.6632 80.9723 66.6632 80.9723C66.6632 80.9723 80.0327 80.9723 91.4656 80.9723C102.898 80.9723 100.415 64.2824 108.556 64.2824C116.696 64.2824 117.693 92.1332 125.226 92.1332C132.759 92.1332 142.07 78.5115 153.591 80.9723C165.113 83.433 186.092 92.1332 193 92.1332C199.908 92.1332 205.274 64.2824 213.017 64.2824C220.76 64.2824 237.832 93.8946 243.39 92.1332C248.948 90.3718 257.923 60.5 265.284 60.5C271.145 60.5 283.204 87.7182 285.772 87.756C293.823 87.8746 299.2 73.0802 304.411 73.0802C311.283 73.0802 321.425 65.9506 333.552 64.2824C345.68 62.6141 346.91 82.4553 362.27 80.9723C377.629 79.4892 383 106.605 383 106.605"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                      />
+                      <defs>
+                        <linearGradient
+                          id="paint0_linear_0_106"
+                          x1="3"
+                          y1="60"
+                          x2="3"
+                          y2="123"
+                          gradientUnits="userSpaceOnUse"
+                        >
+                          <stop
+                            className="text-primary/15 dark:text-primary/35"
+                            stopColor="currentColor"
+                          />
+                          <stop
+                            className="text-transparent"
+                            offset="1"
+                            stopColor="currentColor"
+                            stopOpacity="0.103775"
+                          />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
                 </div>
                 <div className="relative mt-14 space-y-2 rounded-xl text-center">
                   <h2 className="text-lg font-medium transition dark:text-white">
@@ -592,76 +674,79 @@ export default function FeaturesSection() {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      {/* New SVG: AI-generated meeting transcripts */}
-                      {/* Waveform-like lines representing audio/speech */}
+                      {/* Clean waveform representation */}
                       <path
-                        d="M20 100 H40 V120 H60 V80 H80 V140 H100 V60 H120 V160 H140 V40 H160 V180 H180"
+                        d="M20 100 Q30 80, 40 100 Q50 120, 60 90 Q70 60, 80 100 Q90 140, 100 80 
+       Q110 20, 120 100 Q130 180, 140 100 Q150 20, 160 100 Q170 180, 180 100"
                         stroke="currentColor"
                         strokeWidth="2"
-                        opacity="0.5"
-                        className="text-muted"
+                        fill="none"
+                        className="text-primary-600 dark:text-primary-400"
                       />
-                      {/* AI processing nodes */}
+
+                      {/* Three key AI processing nodes */}
                       <circle
-                        cx="50"
-                        cy="150"
-                        r="8"
+                        cx="60"
+                        cy="140"
+                        r="6"
                         fill="currentColor"
-                        opacity="0.8"
-                        className="text-primary-600 dark:text-primary-500"
+                        className="text-primary-700 dark:text-primary-300"
                       />
                       <circle
                         cx="100"
-                        cy="130"
-                        r="8"
+                        cy="120"
+                        r="6"
                         fill="currentColor"
-                        opacity="0.8"
-                        className="text-primary-600 dark:text-primary-500"
+                        className="text-primary-700 dark:text-primary-300"
                       />
                       <circle
-                        cx="150"
-                        cy="150"
-                        r="8"
+                        cx="140"
+                        cy="140"
+                        r="6"
                         fill="currentColor"
-                        opacity="0.8"
-                        className="text-primary-600 dark:text-primary-500"
+                        className="text-primary-700 dark:text-primary-300"
                       />
-                      {/* Connecting lines to suggest AI analysis */}
+
+                      {/* Simple connecting line between nodes */}
                       <path
-                        d="M50 150 Q75 140, 100 130 Q125 120, 150 150"
+                        d="M60 140 Q80 130, 100 120 Q120 110, 140 140"
                         stroke="currentColor"
                         strokeWidth="1.5"
-                        opacity="0.6"
-                        className="text-primary-600 dark:text-primary-500"
-                        strokeDasharray="4"
+                        fill="none"
+                        className="text-primary-600 dark:text-primary-400"
+                        strokeDasharray="3"
                       />
-                      {/* Transcript output (simplified text lines) */}
+
+                      {/* Minimal transcript lines */}
                       <rect
                         x="40"
-                        y="20"
+                        y="30"
                         width="120"
-                        height="8"
+                        height="6"
+                        rx="3"
                         fill="currentColor"
-                        opacity="0.4"
-                        className="text-muted"
+                        className="text-primary-700 dark:text-primary-300"
+                        opacity="0.7"
                       />
                       <rect
                         x="60"
-                        y="35"
+                        y="45"
                         width="80"
-                        height="8"
+                        height="6"
+                        rx="3"
                         fill="currentColor"
-                        opacity="0.4"
-                        className="text-muted"
+                        className="text-primary-700 dark:text-primary-300"
+                        opacity="0.7"
                       />
                       <rect
                         x="50"
-                        y="50"
+                        y="60"
                         width="100"
-                        height="8"
+                        height="6"
+                        rx="3"
                         fill="currentColor"
-                        opacity="0.4"
-                        className="text-muted"
+                        className="text-primary-700 dark:text-primary-300"
+                        opacity="0.7"
                       />
                     </svg>
                   </div>

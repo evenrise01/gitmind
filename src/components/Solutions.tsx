@@ -26,7 +26,7 @@ const staggerContainer = {
 
 export default function Solutions() {
   return (
-    <section id="#solution">
+    <section id="solution">
       <div className="min-h-screen bg-gray-50 px-6 py-20 dark:bg-transparent sm:px-8 lg:px-12">
         {/* Hero Section */}
         <motion.div

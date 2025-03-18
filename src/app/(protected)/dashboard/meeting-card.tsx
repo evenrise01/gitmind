@@ -86,7 +86,7 @@ const MeetingCard = () => {
           },
           {
             onSuccess: (meeting) => {
-              toast.success("Meeting uploaded successfully!");
+              toast.success("Meeting uploaded successfully. Check the meetings tab!");
               setIsSuccess(true); // Show success state
               setTimeout(() => {
                 setIsSuccess(false); // Reset success state after animation

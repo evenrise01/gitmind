@@ -1,5 +1,5 @@
 "use client";
-
+import { Logo } from '@/components/logo'
 import { Button } from "@/components/ui/button";
 import {
   Sidebar,
@@ -55,11 +55,12 @@ export function AppSidebar() {
   const { open } = useSidebar();
   const {projects, projectId, setProjectId} = useProject()
 
+
   return (
     <Sidebar collapsible="icon" variant="floating">
       <SidebarHeader>
         <div className="flex items-center gap-2">
-          <Image src="/logo.svg" alt="Logo image" height={40} width={40} />
+        <Logo className="h-8 w-8"/>
           {open && (
             <h1 className="text-xl font-bold text-primary/80">GitMind</h1>
           )}

@@ -1,147 +1,127 @@
 "use client";
-
-import useProject from "@/hooks/use-project";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useTransform,
+  useScroll,
+  useSpring,
+} from "framer-motion";
 import { cn } from "@/lib/utils";
-import { api } from "@/trpc/react";
-import { ExternalLink, GitCommit } from "lucide-react";
-import Link from "next/link";
-import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { motion, AnimatePresence } from "framer-motion";
-import { formatDistanceToNow } from "date-fns"; // For relative time formatting
 
-const CommitLog = () => {
-  const { projectId, project } = useProject();
-  const { data: commits, isLoading, error } = api.project.getCommits.useQuery({ projectId });
+export const TracingBeam = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
 
-  // Variants for animation
-  const commitVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  };
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [svgHeight, setSvgHeight] = useState(0);
+  const [beamWidth, setBeamWidth] = useState(20); // Dynamic width for responsiveness
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (contentRef.current) {
+        setSvgHeight(contentRef.current.offsetHeight);
+        const screenWidth = window.innerWidth;
+        setBeamWidth(screenWidth < 640 ? 15 : 20); // Smaller width on mobile
+      }
+    };
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
+
+  const y1 = useSpring(useTransform(scrollYProgress, [0, 0.8], [50, svgHeight]), {
+    stiffness: 500,
+    damping: 90,
+  });
+  const y2 = useSpring(useTransform(scrollYProgress, [0, 1], [50, svgHeight - 200]), {
+    stiffness: 500,
+    damping: 90,
+  });
 
   return (
-    <Card className="w-full bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-lg">
-      <CardHeader>
-        <CardTitle className="text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-          <GitCommit className="h-5 w-5 text-violet-600 dark:text-violet-400" />
-          Commit History
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        {/* Loading State */}
-        {isLoading && (
-          <div className="flex justify-center py-6">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+    <motion.div
+      ref={ref}
+      className={cn(
+        "relative mx-auto h-full w-full max-w-4xl px-4 sm:px-6",
+        className
+      )}
+    >
+      <div className="absolute top-3 left-0 sm:-left-2 md:-left-4 lg:-left-6 xl:-left-8">
+        <motion.div
+          transition={{ duration: 0.2, delay: 0.5 }}
+          animate={{
+            boxShadow:
+              scrollYProgress.get() > 0
+                ? "none"
+                : "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+          }}
+          className="border-neutral-200 flex h-4 w-4 items-center justify-center rounded-full border shadow-sm sm:ml-4 md:ml-6"
+          style={{ zIndex: 20 }} // Ensure dot is above content
+        >
+          <motion.div
+            transition={{ duration: 0.2, delay: 0.5 }}
+            animate={{
+              backgroundColor: scrollYProgress.get() > 0 ? "white" : "#10b981",
+              borderColor: scrollYProgress.get() > 0 ? "white" : "#059669",
+            }}
+            className="h-2 w-2 rounded-full border border-neutral-300 bg-white"
+          />
+        </motion.div>
+        <svg
+          viewBox={`0 0 ${beamWidth} ${svgHeight}`}
+          width={beamWidth}
+          height={svgHeight}
+          className="block sm:ml-4 md:ml-6"
+          aria-hidden="true"
+          style={{ zIndex: 10 }} // Ensure SVG is above background but below content
+        >
+          <motion.path
+            d={`M 1 0V -36 l ${beamWidth - 2} 24 V ${svgHeight * 0.8} l -${beamWidth - 2} 24V ${svgHeight}`}
+            fill="none"
+            stroke="#9091A0"
+            strokeOpacity="0.16"
+            transition={{ duration: 10 }}
+          />
+          <motion.path
+            d={`M 1 0V -36 l ${beamWidth - 2} 24 V ${svgHeight * 0.8} l -${beamWidth - 2} 24V ${svgHeight}`}
+            fill="none"
+            stroke="url(#gradient)"
+            strokeWidth="1.25"
+            className="motion-reduce:hidden"
+            transition={{ duration: 10 }}
+          />
+          <defs>
+            <motion.linearGradient
+              id="gradient"
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              x2="0"
+              y1={y1}
+              y2={y2}
             >
-              <GitCommit className="h-6 w-6 text-violet-600 dark:text-violet-400" />
-            </motion.div>
-          </div>
-        )}
-
-        {/* Error State */}
-        {error && (
-          <div className="text-center py-6 text-red-600 dark:text-red-400">
-            Failed to load commits: {error.message}
-          </div>
-        )}
-
-        {/* Empty State */}
-        {!isLoading && !error && (!commits || commits.length === 0) && (
-          <div className="text-center py-6 text-gray-500 dark:text-gray-400">
-            No commits found for this project.
-          </div>
-        )}
-
-        {/* Commit List */}
-        {commits && commits.length > 0 && (
-          <ScrollArea className="h-[500px] pr-4">
-            <ul className="space-y-6">
-              <AnimatePresence>
-                {commits.map((commit, commitIdx) => (
-                  <motion.li
-                    key={commit.id}
-                    variants={commitVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    className="relative flex gap-x-4"
-                  >
-                    {/* Timeline Line */}
-                    <div
-                      className={cn(
-                        commitIdx === commits.length - 1 ? "h-6" : "-bottom-6",
-                        "absolute left-0 top-0 flex w-6 justify-center",
-                      )}
-                    >
-                      <div className="w-px bg-gray-200 dark:bg-gray-600 translate-x-1" />
-                    </div>
-
-                    {/* Timeline Dot */}
-                    <div className="relative flex h-6 w-6 flex-none items-center justify-center">
-                      <div className="h-3 w-3 rounded-full bg-violet-600 dark:bg-violet-400 ring-1 ring-violet-600 dark:ring-violet-400" />
-                    </div>
-
-                    {/* Commit Content */}
-                    <div className="flex-auto rounded-md bg-gray-50 dark:bg-gray-700 p-4 ring-1 ring-inset ring-gray-200 dark:ring-gray-600 transition-all duration-200 hover:shadow-md">
-                      <div className="flex items-center justify-between gap-x-4">
-                        <div className="flex items-center gap-x-3">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src={commit.commitAuthorAvatar} alt="Commit Author Avatar" />
-                            <AvatarFallback className="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200">
-                              {commit.commitAuthorName.charAt(0)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <Link
-                            href={`${project?.githubUrl}/commit/${commit.commitHash}`}
-                            target="_blank"
-                            className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-violet-600 dark:hover:text-violet-400 transition-colors duration-200"
-                          >
-                            {commit.commitAuthorName}
-                          </Link>
-                        </div>
-                        <Badge
-                          variant="outline"
-                          className="text-xs text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-500"
-                        >
-                          {formatDistanceToNow(new Date(commit.commitDate), { addSuffix: true })}
-                        </Badge>
-                      </div>
-
-                      <div className="mt-2">
-                        <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                          {commit.commitMessage}
-                        </p>
-                        <pre className="mt-1 whitespace-pre-wrap text-xs text-gray-600 dark:text-gray-400 font-mono">
-                          {commit.commitSummary}
-                        </pre>
-                      </div>
-
-                      <div className="mt-2 flex justify-end">
-                        <Link
-                          href={`${project?.githubUrl}/commit/${commit.commitHash}`}
-                          target="_blank"
-                          className="text-xs text-violet-600 dark:text-violet-400 hover:underline flex items-center gap-1"
-                        >
-                          View on GitHub
-                          <ExternalLink className="h-3 w-3" />
-                        </Link>
-                      </div>
-                    </div>
-                  </motion.li>
-                ))}
-              </AnimatePresence>
-            </ul>
-          </ScrollArea>
-        )}
-      </CardContent>
-    </Card>
+              <stop stopColor="#18CCFC" stopOpacity="0" />
+              <stop stopColor="#18CCFC" />
+              <stop offset="0.325" stopColor="#6344F5" />
+              <stop offset="1" stopColor="#AE48FF" stopOpacity="0" />
+            </motion.linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div
+        ref={contentRef}
+        className="relative z-30 ml-8 sm:ml-12 md:ml-16" // Added margin to make space for beam
+      >
+        {children}
+      </div>
+    </motion.div>
   );
 };
-
-export default CommitLog;

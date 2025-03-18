@@ -70,7 +70,7 @@ export const HeroHeader = () => {
 
   return (
     <header>
-      <nav className="fixed z-20 w-full pt-2">
+      <nav className="fixed z-50 w-full pt-2">
         <div
           className={cn(
             "mx-auto max-w-7xl rounded-3xl px-6 transition-all duration-300 lg:px-12",
