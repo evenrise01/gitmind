@@ -10,7 +10,7 @@ const bodyParser = z.object({
   meetingId: z.string(),
 });
 
-export const maxDuration = 300; //5minutes
+export const maxDuration = 60; //Have set it to 60 sec in order to build on Vercel hobby plan. Should be ideally 5minutes.
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
