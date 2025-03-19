@@ -146,24 +146,6 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
-      {/* Collapsible Button (outside SidebarContent) */}
-      <div className="p-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleSidebar}
-          aria-label={open ? "Collapse Sidebar" : "Expand Sidebar"}
-          className="w-full justify-center"
-        >
-          <ChevronLeft
-            className={cn(
-              "h-6 w-6 transition-transform duration-200",
-              !open && "rotate-180" // Rotate when collapsed to indicate expand
-            )}
-          />
-        </Button>
-      </div>
     </Sidebar>
   );
 }
