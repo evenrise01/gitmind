@@ -10,12 +10,12 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAFGY_CuBXRFSnSgGiqKvrzfEOV1mHrcNM",
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "gitmind-f2b5b.firebaseapp.com",
   projectId: "gitmind-f2b5b",
   storageBucket: "gitmind-f2b5b.firebasestorage.app",
   messagingSenderId: "449050761938",
-  appId: "1:449050761938:web:0d2ddcb40d8c0674276b0b",
+  appId: process.env.FIREBASE_APP_ID,
   measurementId: "G-S3HPLJVTK0",
 };
 

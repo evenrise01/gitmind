@@ -1,7 +1,7 @@
 import CallToAction from "@/components/CalltoAction";
 import FeaturesSection from "@/components/Features";
+import { HowGitMindWorks } from "@/components/FeatureWorking";
 import Footer from "@/components/Footer";
-import { HowGitMindWorks } from "@/components/GitMindWorking";
 import HeroSection from "@/components/Hero";
 import Pricing from "@/components/Pricing";
 import Solutions from "@/components/Solutions";
